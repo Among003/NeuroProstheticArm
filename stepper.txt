@@ -1,0 +1,74 @@
+/*
+Just a simple and crude stepper driver test.
+*/
+const int ledPin = 13; // the number of the LED pin
+const int Phase_A = 8;
+const int Phase_AA = 9;
+const int Phase_B = 10;
+const int Phase_BB = 11;
+int StepDelay = 25;
+int StepDuration = 7;
+int StepCounter;
+boolean StepDirectionFWD = true;
+void setup() {
+// set the digital pin as output:
+pinMode(ledPin, OUTPUT);
+pinMode(Phase_A, OUTPUT);
+pinMode(Phase_AA, OUTPUT);
+pinMode(Phase_B, OUTPUT);
+pinMode(Phase_BB, OUTPUT);
+digitalWrite(Phase_A, LOW);
+digitalWrite(Phase_AA, LOW);
+digitalWrite(Phase_B, LOW);
+digitalWrite(Phase_BB, LOW);
+
+StepCounter = 0;
+}
+void loop()
+{
+if(StepDirectionFWD) {
+digitalWrite(Phase_A, HIGH);
+digitalWrite(Phase_AA, LOW);
+delay(StepDelay);
+digitalWrite(Phase_B, HIGH);
+digitalWrite(Phase_BB, LOW);
+delay(StepDelay);
+digitalWrite(Phase_A, LOW);
+digitalWrite(Phase_AA, HIGH);
+delay(StepDelay);
+digitalWrite(Phase_B, LOW);
+digitalWrite(Phase_BB, HIGH);
+delay(StepDelay);
+}
+else {
+digitalWrite(Phase_B, LOW);
+digitalWrite(Phase_BB, HIGH);
+delay(StepDelay);
+
+digitalWrite(Phase_A, LOW);
+digitalWrite(Phase_AA, HIGH);
+delay(StepDelay);
+
+digitalWrite(Phase_B, HIGH);
+digitalWrite(Phase_BB, LOW);
+delay(StepDelay);
+
+digitalWrite(Phase_A, HIGH);
+digitalWrite(Phase_AA, LOW);
+delay(StepDelay);
+}
+
+StepCounter++;
+
+if(StepCounter >= StepDuration) {
+if(StepDirectionFWD) {
+StepDirectionFWD = false;
+}
+else {
+StepDirectionFWD = true;
+}
+delay(5);
+StepCounter = 0;
+}
+
+}
