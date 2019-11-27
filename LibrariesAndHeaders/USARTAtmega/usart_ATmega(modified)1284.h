@@ -1,5 +1,5 @@
 
-// Permission to copy is granted provided that this header remains intact. 
+// Permission to copy is granted provided that this header remains intact.
 // This software is provided with no warranties.
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ void initUSART(unsigned char usartNum)
 	if (usartNum != 1) {
 		// Turn on the reception circuitry of USART0
 		// Turn on receiver and transmitter
-		// Use 8-bit character sizes 
+		// Use 8-bit character sizes
 		UCSR0B |= (1 << RXEN0)  | (1 << TXEN0);
 		UCSR0C |= (1 << UCSZ00) | (1 << UCSZ01);
 		// Load lower 8-bits of the baud rate value into the low byte of the UBRR0 register
@@ -106,26 +106,56 @@ void USART_Send(unsigned char sendMe, unsigned char usartNum)
 //Functionality - receives an 8-bit char value
 //Parameter: usartNum specifies which USART is waiting to receive data
 //Returns: Unsigned char data from the receive buffer
-unsigned char USART_Receive(unsigned char usartNum)
+
+char calculateParity(char x){
+	x &= ~(0x01);
+	
+	char totParity = 0;
+	for (int x = 0; x < 8; x++){
+		if (x & 0x01){
+			totParity +=1;
+		}
+		x >> 1;
+	}
+	
+	return totParity % 2;
+	
+}
+
+
+
+signed char USART_Receive(unsigned char usartNum)
 {
 	if (usartNum != 1) {
 		while ( !(UCSR0A & (1 << RXC0)) ); // Wait for data to be received
 		
-		if (UCSR0A & (1 << UPE)){
-			UCSR0A &= ~(1 << UPE);
-			f
-			return -1; 
+		
+		//return UDR0;
+		
+		if (UCSR0A & (1 << UPE0)){
+			return -1;
 		}
 		else {
 			
-			return UDR0;// Get and return received data from buffer
+			return UDR0 ;// Get and return received data from buffer
 		}
+	
 	}
+	
+	/*	char recieved = UDR0;
+
+		if (calculateParity(recieved) == (recieved & 0x01)){
+			return recieved >> 1;
+		}
+		
+		else return -1;
+	}*/
+	
 	else {
 		while ( !(UCSR1A & (1 << RXC1)) );
-		if (UCSR1A & (1 << UPE))
-		return -1; 
-	
+		if (UCSR1A & (1 << UPE1))
+		return -1;
+		
 		else return UDR1;// Get and return received data from buffer
 	}
 }

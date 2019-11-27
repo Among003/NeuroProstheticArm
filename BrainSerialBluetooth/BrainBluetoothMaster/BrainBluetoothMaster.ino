@@ -31,5 +31,9 @@ void loop() {
         Serial.println(brain.readCSV());
     }
 
+    Serial.write(1);
+    delay(1000);
+    Serial.write(2);
+
    
 }
