@@ -1,1 +1,1 @@
-CS122A Project Temporary Readme
+CS122A Project: Neuro Prosthetic Arm
